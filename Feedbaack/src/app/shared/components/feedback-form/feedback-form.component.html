@@ -1,0 +1,40 @@
+<body class="body">
+<div class="feedback-container">
+  <h2>Submit Your Feedback</h2>
+  <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+    <!-- Category Dropdown -->
+    <label for="category">Select Category</label>
+    <select id="category" formControlName="category">
+      <option value="" disabled selected>Select a category</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+    <div *ngIf="feedbackForm.get('category')?.invalid && feedbackForm.get('category')?.touched">
+      <small class="error">Please select a category</small>
+    </div>
+
+    <!-- Message Field -->
+    <label for="message">Message</label>
+    <textarea id="message" formControlName="message" placeholder="Your Feedback"></textarea>
+    <div *ngIf="feedbackForm.get('message')?.errors?.['required'] && feedbackForm.get('message')?.touched">
+      <small class="error">Message is required</small>
+    </div>
+    <div *ngIf="feedbackForm.get('message')?.errors?.['minlength'] && feedbackForm.get('message')?.touched">
+      <small class="error">Message must be at least 10 characters long</small>
+    </div>
+
+    <!-- 5-Star Rating -->
+    <label>Rate Category</label>
+    <div class="star-rating">
+      <span *ngFor="let star of [1,2,3,4,5]" (click)="setRating(star)">
+        <i class="fa" [ngClass]="{'fa-star': star <= rating, 'fa-star-o': star > rating}"></i>
+      </span>
+    </div>
+    <div *ngIf="feedbackForm.get('rating')?.errors?.['min'] && feedbackForm.get('rating')?.touched">
+      <small class="error">Please select at least 1 star</small>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="feedbackForm.invalid">Submit</button>
+  </form>
+</div>
+</body>
