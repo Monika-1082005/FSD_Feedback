@@ -1,4 +1,4 @@
-package com.example.feedback.config;
+package com.example.feedback.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

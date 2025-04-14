@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FeedbackFormComponent } from './components/feedback-form/feedback-form.component';
+import { FeedbackFormComponent } from '../feedbacks/components/feedback-form/feedback-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 

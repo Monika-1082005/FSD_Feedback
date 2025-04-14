@@ -30,15 +30,18 @@ export class FeedbackFormComponent {
 
   submitFeedback() {
     // Log the form data before submitting
-    console.log(this.feedbackForm.value); // This will log the form values
+    console.log('Form data:', this.feedbackForm.value);
   
     const formData = {
       category: this.feedbackForm.value.category,
-      feedbackDescription: this.feedbackForm.value.message,  // Ensure this key matches what the backend expects
+      feedbackDescription: this.feedbackForm.value.message,
       rating: this.rating,
     };
   
-    this.http.post('http://localhost:8080/feedback/api/submit', formData).subscribe({
+    // Check if the category value is correctly set
+    console.log('Category:', this.feedbackForm.value.category);  // Should log the selected category
+  
+    this.http.post('http://localhost:8080/submit', formData).subscribe({
       next: (response) => {
         console.log("Feedback submitted successfully", response);
         this.feedbackForm.reset(); // Reset after success
@@ -48,5 +51,6 @@ export class FeedbackFormComponent {
       },
     });
   }
+  
   
 }

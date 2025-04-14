@@ -1,21 +1,20 @@
 package com.example.feedback.Entity;
-
+import lombok.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "feedback")
 public class FeedbackEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id")
-    private Integer feedbackId; // Change to Integer for nullable handling
-
-    // Matching the foreign key style from the user table
+    private Integer feedbackId;
+    
     @Column(name = "user_id")
     private Long userId;
 
@@ -37,56 +36,10 @@ public class FeedbackEntity {
     @PrePersist
     protected void onCreate() {
         if (feedbackDate == null) {
-            feedbackDate = LocalDateTime.now(); // Set feedbackDate to current time if not provided
+            feedbackDate = LocalDateTime.now(); // Set date
         }
-    }
-
-    // Getters and Setters
-    public Integer getFeedbackId() {
-        return feedbackId;
-    }
-
-    public void setFeedbackId(Integer feedbackId) {
-        this.feedbackId = feedbackId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getFeedbackDescription() {
-        return feedbackDescription;
-    }
-
-    public void setFeedbackDescription(String feedbackDescription) {
-        this.feedbackDescription = feedbackDescription;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public LocalDateTime getFeedbackDate() {
-        return feedbackDate;
-    }
-
-    public void setFeedbackDate(LocalDateTime feedbackDate) {
-        this.feedbackDate = feedbackDate;
+        if (userId == null) {
+            userId = 1L; // TEMPORARY dummy user ID, replace later when you integrate user module
+        }
     }
 }

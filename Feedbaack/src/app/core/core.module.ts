@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FeedbackService } from './services/feedback.service';
+import { FeedbackService } from '../auth/services/feedback.service';
 
 
 

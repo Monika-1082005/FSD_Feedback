@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { interceptors } from './shared/interceptors';
+import { interceptors } from './auth/interceptors';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({

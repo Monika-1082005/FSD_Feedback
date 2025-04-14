@@ -1,4 +1,4 @@
-package com.example.feedback.service;
+package com.example.feedback.Service;
 
 import com.example.feedback.Entity.FeedbackEntity;
 import com.example.feedback.Repository.FeedbackRepository;
@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class FeedbackService {
 
-    @Autowired
-    private FeedbackRepository feedbackRepository;
+    private final FeedbackRepository feedbackRepository;
 
-    // Instance method to save feedback
+    @Autowired
+    public FeedbackService(FeedbackRepository feedbackRepository) {
+        this.feedbackRepository = feedbackRepository;
+    }
+
     public FeedbackEntity saveFeedback(FeedbackEntity feedbackEntity) {
-        return feedbackRepository.save(feedbackEntity); // No static reference here
+        return feedbackRepository.save(feedbackEntity);
     }
 }
+
