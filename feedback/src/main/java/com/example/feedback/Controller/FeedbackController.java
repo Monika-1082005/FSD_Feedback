@@ -34,11 +34,6 @@ public class FeedbackController {
         this.feedbackService = feedbackService;
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "Welcome to the Feedback API";
-    }
-
     @GetMapping("/test")
     @Operation(summary = "Test method")
     public String testMethod() {
@@ -78,18 +73,58 @@ public class FeedbackController {
     }
 
     @PutMapping("/feedbacks/{id}")
-    public String updateFeedback(@PathVariable("id") Integer id, @RequestBody FeedbackEntity feedback) {
+    public ResponseEntity<String> updateFeedback(@PathVariable("id") Integer id, @RequestBody FeedbackEntity feedback) {
         Optional<FeedbackEntity> existingFeedback = feedbackRepository.findById(id);
 
         if (existingFeedback.isPresent()) {
+            // Ensure the updated entity has the correct ID
             feedback.setFeedbackId(id);
+
+            // Optional: preserve missing fields or validate them
+            if (feedback.getUserId() == null) {
+                feedback.setUserId(existingFeedback.get().getUserId());
+            }
+            if (feedback.getFeedbackDate() == null) {
+                feedback.setFeedbackDate(existingFeedback.get().getFeedbackDate());
+            }
+
             feedbackRepository.save(feedback);
             log.info("Feedback with ID {} updated successfully", id);
-            return "Feedback " + id + " updated successfully.";
+            return ResponseEntity.ok("Feedback " + id + " updated successfully.");
         } else {
+            log.warn("Feedback with ID {} not found. Update failed.", id);
+            return ResponseEntity.status(404).body("Feedback " + id + " not found. Cannot update.");
+        }
+    }
+
+    @PatchMapping("/feedbacks/{id}")
+    public ResponseEntity<?> patchFeedback(@PathVariable("id") Integer id,
+            @RequestBody FeedbackEntity feedbackUpdates) {
+        Optional<FeedbackEntity> optionalFeedback = feedbackRepository.findById(id);
+
+        if (optionalFeedback.isPresent()) {
+            FeedbackEntity feedback = optionalFeedback.get();
+
+            if (feedbackUpdates.getFeedbackDescription() != null) {
+                feedback.setFeedbackDescription(feedbackUpdates.getFeedbackDescription());
+            }
+
+            if (feedbackUpdates.getRating() != null) {
+                feedback.setRating(feedbackUpdates.getRating());
+            }
+
+            if (feedbackUpdates.getCategory() != null) {
+                feedback.setCategory(feedbackUpdates.getCategory());
+            }
+
+            if (feedbackUpdates.getUserId() != null) {
+                feedback.setUserId(feedbackUpdates.getUserId());
+            }
+
             feedbackRepository.save(feedback);
-            log.info("Feedback with ID {} not found. Creating new feedback.", id);
-            return "Feedback " + id + " not found. A new entry was created.";
+            return ResponseEntity.ok("Feedback " + id + " updated partially.");
+        } else {
+            return ResponseEntity.status(404).body("Feedback not found.");
         }
     }
 
